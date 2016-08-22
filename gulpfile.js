@@ -12,7 +12,8 @@ var gulp       = require('gulp'),
 		watch      = require('gulp-watch'),
 		gutil      = require('gulp-util'),
     uglify     = require('gulp-uglify'),
-		stylish    = require('coffeelint-stylish')
+		stylish    = require('coffeelint-stylish'),
+    mocha      = require('gulp-mocha');
 
 /**
   * Gulp Configurations
@@ -72,6 +73,22 @@ gulp.task('watch', function(){
 	gulp.watch('./server/**/*.coffee', ['coffee', 'lint'])
 });
 
+/**
+  * Testing Tasks
+  */
+
+gulp.task('test', function(){
+  require('coffee-script/register'); // Required for mocha
+  var reporter = !!process.env.CIRCLECI ? 'mocha-junit-reporter' : 'spec';
+  gulp.src('tests/**/*.coffee', {read:false})
+  .pipe(mocha({
+    reporter: reporter,
+    reporterOptions: {
+      mochaFile: process.env.CIRCLE_TEST_REPORTS + '/junit-report.xml'
+    },
+    compilers: 'coffee'
+  }));
+});
 
 /**
   * Serve Tasks
