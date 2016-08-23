@@ -12,7 +12,7 @@ databaseAdapter = require('./database_adapter')
 app = express()
 router = express.Router()
 
-
+app.use(express.static('public'));
 app.set "port", process.env.PORT or 3000
 app.set "env", process.env.NODE_ENV or "development"
 
