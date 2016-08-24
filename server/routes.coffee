@@ -27,6 +27,13 @@ module.exports = (app, router) ->
   router.get "/feedback/:feedback_id", (req, res) ->
     feedbackController.getFeedback(req, res)
 
+  router.get "/ip", (req, res) ->
+    ip = req.headers['x-forwarded-for'] ||
+         req.connection.remoteAddress ||
+         req.socket.remoteAddress ||
+         req.connection.socket.remoteAddress;
+    res.status(200).send ip
+
   # Test Route
   router.get "/test", (req, res) ->
     testController.get(req, res)
