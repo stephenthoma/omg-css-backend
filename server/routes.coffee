@@ -6,7 +6,8 @@ module.exports = (app, router) ->
   app.use "/api/v1", router
 
   app.get "/", (req, res) ->
-    res.status(200).send "omg-css API"
+    #res.status(200).send "omg-css API"
+    res.sendFile('d3dashboard.html', {"root": __dirname})
 
   # Middleware for router
   router.use (req, res, next)->
@@ -43,5 +44,3 @@ module.exports = (app, router) ->
 
   #router.get "/test/:test_id", (req, res) ->
     #testController.getTest(req, res)
-
-
