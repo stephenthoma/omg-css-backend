@@ -1,5 +1,4 @@
 "use strict"
-testController = require './controllers/test_controller'
 feedbackController = require './controllers/feedback_controller'
 
 module.exports = (app, router) ->
@@ -34,14 +33,6 @@ module.exports = (app, router) ->
          req.connection.socket.remoteAddress;
     res.status(200).send ip
 
-  # Test Route
-  router.get "/test", (req, res) ->
-    testController.get(req, res)
 
-  router.post "/test", (req, res) ->
-    testController.post(req, res)
-
-  #router.get "/test/:test_id", (req, res) ->
-    #testController.getTest(req, res)
 
 
