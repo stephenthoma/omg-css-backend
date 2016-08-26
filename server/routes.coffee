@@ -1,5 +1,6 @@
 "use strict"
 feedbackController = require './controllers/feedback_controller'
+analyticsController = require './controllers/analytics_controller'
 
 module.exports = (app, router) ->
   app.use "/api/v1", router
@@ -26,6 +27,7 @@ module.exports = (app, router) ->
   router.get "/feedback/:feedback_id", (req, res) ->
     feedbackController.getFeedback(req, res)
 
+  # Analytics routes
   router.get "/ip", (req, res) ->
     ip = req.headers['x-forwarded-for'] ||
          req.connection.remoteAddress ||
@@ -33,6 +35,14 @@ module.exports = (app, router) ->
          req.connection.socket.remoteAddress;
     res.status(200).send ip
 
+  router.post "/analytics", (req, res) ->
+    analyticsController.postAnalytics(req, res)
 
+  router.post "/analytics/time", (req,res) ->
+    analyticsController.postTimeAnalytics(req, res)
 
+  router.get "/analytics", (req, res) ->
+    analyticsController.getAnalytics(req, res)
 
+  router.get "/analytics/geo", (req, res) ->
+    analyticsController.getGeo(req, res)
