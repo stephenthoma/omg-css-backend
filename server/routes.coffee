@@ -44,5 +44,8 @@ module.exports = (app, router) ->
   router.get "/analytics", (req, res) ->
     analyticsController.getAnalytics(req, res)
 
-  router.get "/analytics/geo", (req, res) ->
-    analyticsController.getGeo(req, res)
+  router.get "/analytics/charts/geofreq", (req, res) ->
+    analyticsController.getGeoFreq(req, res)
+
+  router.get "/analytics/charts/sessions", (req, res) ->
+    analyticsController.getSessions(req, res)
