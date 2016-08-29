@@ -5,6 +5,15 @@ db = databaseAdapter.getDB()
 
 analyticsController =
 
+  getUser: (req, res) ->
+    uuid = req.params.uuid
+    db = databaseAdapter.getDB()
+    return db.collection('analytics').findOne {uuid: uuid}, (err, result) ->
+      if result
+        res.status(200).send true
+      else
+        res.status(200).send false
+
   getAnalytics: (req, res) ->
     db = databaseAdapter.getDB()
     return db.collection('analytics').find().toArray (err, result) ->

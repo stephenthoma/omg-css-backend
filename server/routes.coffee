@@ -14,6 +14,9 @@ module.exports = (app, router) ->
     console.log('Making a ' + req.method + ' request to ' + req.url)
     next()
 
+  router.get "/user/:uuid", (req, res) ->
+    analyticsController.getUser(req, res)
+
   # Feedback routes
   router.post "/feedback", (req, res) ->
     feedbackController.postFeedback(req, res)
