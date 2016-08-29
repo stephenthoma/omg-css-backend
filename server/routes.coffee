@@ -1,6 +1,6 @@
 "use strict"
-testController = require './controllers/test_controller'
 feedbackController = require './controllers/feedback_controller'
+analyticsController = require './controllers/analytics_controller'
 
 module.exports = (app, router) ->
   app.use "/api/v1", router
@@ -27,6 +27,7 @@ module.exports = (app, router) ->
   router.get "/feedback/:feedback_id", (req, res) ->
     feedbackController.getFeedback(req, res)
 
+  # Analytics routes
   router.get "/ip", (req, res) ->
     ip = req.headers['x-forwarded-for'] ||
          req.connection.remoteAddress ||
@@ -34,14 +35,21 @@ module.exports = (app, router) ->
          req.connection.socket.remoteAddress;
     res.status(200).send ip
 
-  # Test Route
-  router.get "/test", (req, res) ->
-    testController.get(req, res)
+  router.post "/analytics", (req, res) ->
+    analyticsController.postAnalytics(req, res)
 
-  router.post "/test", (req, res) ->
-    testController.post(req, res)
+  router.post "/analytics/time", (req,res) ->
+    analyticsController.postTimeAnalytics(req, res)
 
-  #router.get "/test/:test_id", (req, res) ->
-    #testController.getTest(req, res)
+  router.get "/analytics", (req, res) ->
+    analyticsController.getAnalytics(req, res)
 
+  router.get "/analytics/charts/geofreq", (req, res) ->
+    analyticsController.getGeoFreq(req, res)
+
+  router.get "/analytics/charts/sessions", (req, res) ->
+    analyticsController.getSessions(req, res)
+
+  router.get "/analytics/charts/sessionsfreq", (req, res) ->
+    analyticsController.getNumSessions(req, res)
 
