@@ -49,3 +49,7 @@ module.exports = (app, router) ->
 
   router.get "/analytics/charts/sessions", (req, res) ->
     analyticsController.getSessions(req, res)
+
+  router.get "/analytics/charts/sessionsfreq", (req, res) ->
+    analyticsController.getNumSessions(req, res)
+

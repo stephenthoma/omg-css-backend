@@ -10,7 +10,6 @@ analyticsController =
     return db.collection('analytics').find().toArray (err, result) ->
       res.status(200).send result
 
-
   postAnalytics: (req, res) ->
     document = req.body
     document.date = new Date
@@ -18,7 +17,10 @@ analyticsController =
       res.status(200).send "Successful"
 
   postTimeAnalytics: (req, res) ->
-    res.status(500).send
+    document = req.body
+    document.date = new Date
+    db.collection('analyticstimes').insert document, (err, result) ->
+      res.status(200).send "Successful"
 
   getGeoFreq: (req, res) ->
     db = databaseAdapter.getDB()
@@ -38,6 +40,29 @@ analyticsController =
       res.status(200).send gChartsObject
 
   getSessions: (req, res) ->
+    db = databaseAdapter.getDB()
+    return db.collection('analytics').aggregate [
+      {
+        "$lookup": {
+          "from": "analyticstimes",
+          "localField": "uuid",
+          "foreignField": "uuid",
+          "as": "pagemetrics"
+        }
+      },
+      {
+        "$group": {
+          "_id": "$geolocationinfo.country_name",
+          "sessionuids": {$addToSet: "$uuid"},
+          "pagetime": {$push: "$pagemetrics.timeonpage"},
+          "clicks": {$push: "$pagemetrics.numofclicks"}
+        }
+      }
+    ], (err, result) ->
+      console.log result
+      res.status(200).send result
+
+  getNumSessions: (req, res) ->
     db = databaseAdapter.getDB()
     return db.collection('analytics').aggregate [
       {
