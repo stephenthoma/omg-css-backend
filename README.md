@@ -5,7 +5,7 @@ Backend
 
 Install node and mongodb, then run:
 ``` bash
-  $ npm install && bower install
+  $ npm install
   $ mongod
   $ cp config/default.json.sample config/default.json
 ```
