@@ -13,7 +13,8 @@ var gulp       = require('gulp'),
 		gutil      = require('gulp-util'),
     uglify     = require('gulp-uglify'),
 		stylish    = require('coffeelint-stylish'),
-    mocha      = require('gulp-mocha');
+    mocha      = require('gulp-mocha'),
+    istanbul   = require('gulp-istanbul');
 
 /**
   * Gulp Configurations
@@ -76,17 +77,27 @@ gulp.task('watch', function(){
   * Testing Tasks
   */
 
-gulp.task('test', function(){
+gulp.task('pre-test', function(){
   require('coffee-script/register'); // Required for mocha
-  var reporter = 'mocha-junit-reporter';
-  gulp.src('tests/**/*.coffee', {read:false})
-  .pipe(mocha({
-    reporter: reporter,
-    reporterOptions: {
-      mochaFile: 'junit-report.xml'
-    },
-    compilers: 'coffee'
-  }));
+  gulp.src('dist/**/*.js')
+  .pipe(istanbul({includeUntested: true}))
+  .pipe(istanbul.hookRequire());
+});
+
+gulp.task('test', ['pre-test'], function () {
+  return gulp.src('tests/**/*.js')
+    .pipe(mocha({
+      reporter: 'mocha-junit-reporter',
+      reporterOptions: {
+        mochaFile: 'junit-report.xml'
+      }
+    }))
+    // Creating the reports after tests ran
+    .pipe(istanbul.writeReports({
+      dir: './assets/unit-test-coverage',
+      reporters: [ 'html' ],
+      reportOpts: { dir: './assets/unit-test-coverage'}
+    }));
 });
 
 /**

@@ -19,3 +19,4 @@
 # Configurations
 /config/*
 !/config/default.json.sample
+assets
