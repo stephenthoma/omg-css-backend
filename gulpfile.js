@@ -79,12 +79,12 @@ gulp.task('watch', function(){
 
 gulp.task('test', function(){
   require('coffee-script/register'); // Required for mocha
-  var reporter = !!process.env.CIRCLECI ? 'mocha-junit-reporter' : 'spec';
+  var reporter = !!process.env.JENKINS ? 'mocha-junit-reporter' : 'spec';
   gulp.src('tests/**/*.coffee', {read:false})
   .pipe(mocha({
     reporter: reporter,
     reporterOptions: {
-      mochaFile: process.env.CIRCLE_TEST_REPORTS + '/junit-report.xml'
+      mochaFile: 'junit-report.xml'
     },
     compilers: 'coffee'
   }));
