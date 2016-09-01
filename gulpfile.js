@@ -30,7 +30,6 @@ var config = {
   }
 }.init();
 
-
 /**
   * Build Tasks
   */
@@ -79,7 +78,7 @@ gulp.task('watch', function(){
 
 gulp.task('test', function(){
   require('coffee-script/register'); // Required for mocha
-  var reporter = !!process.env.JENKINS ? 'mocha-junit-reporter' : 'spec';
+  var reporter = 'mocha-junit-reporter';
   gulp.src('tests/**/*.coffee', {read:false})
   .pipe(mocha({
     reporter: reporter,
