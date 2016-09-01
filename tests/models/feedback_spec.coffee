@@ -28,6 +28,9 @@ describe 'Model: Feedback', ->
       expect(res.body.length).to.equal 1
       done()
 
+  it 'should fail', (done)->
+    throw new Error "fail"
+
   it 'should be able to add feedback', (done)->
     request
     .post('/feedback').use prefix
