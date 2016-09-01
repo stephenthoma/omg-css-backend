@@ -95,7 +95,7 @@ gulp.task('test', ['pre-test'], function () {
     // Creating the reports after tests ran
     .pipe(istanbul.writeReports({
       dir: './assets/unit-test-coverage',
-      reporters: [ 'html' ],
+      reporters: [ 'cobertura' ],
       reportOpts: { dir: './assets/unit-test-coverage'}
     }));
 });
